@@ -27,6 +27,11 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req,res) => {
     const { title, description, status, user_id } = req.body;
+
+    if (!title || !description || !status || !user_id) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+      
     try {
         const [result] = await db.query("INSERT INTO tasks (title, description, status, user_id) VALUES (?,?,?,?)" , [title, description, status, user_id]);
         res.status(201).json({
